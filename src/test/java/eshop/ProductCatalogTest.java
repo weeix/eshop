@@ -25,10 +25,26 @@ class ProductCatalogTest {
     }
 
     @Test
-    void testAddProduct() {
+    void testGetNonExistingProduct() {
+        Product product = productCatalog.getProduct(0);
+        assertEquals(null, product);
+    }
+
+    @Test
+    void testAddOneProduct() {
         Product product = new Product(4, "Bowl", 100, 20);
         productCatalog.addProduct(product);
         assertSame(product, productCatalog.getProduct(4));
+    }
+
+    @Test
+    void testAddTwoProduct() {
+        Product product1 = new Product(4, "Bowl", 100, 20);
+        Product product2 = new Product(5, "Plate", 90, 20);
+        productCatalog.addProduct(product1);
+        productCatalog.addProduct(product2);
+        assertSame(product1, productCatalog.getProduct(4));
+        assertSame(product2, productCatalog.getProduct(5));
     }
 
     private class DataServiceStub implements IDataService {
