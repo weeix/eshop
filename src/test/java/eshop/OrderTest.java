@@ -17,15 +17,30 @@ class OrderTest {
     }
 
     @Test
-    void testAddItem() {
-        Product product = new Product(1, "Spoon", 50, 20);
-        order.addItem(product, 1);
+    void testCreateNegativeIdOrder() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new Order(-1, LocalDateTime.now()));
+        assertEquals("Order ID must not be negative value", exception.getMessage());
     }
 
     @Test
-    void testGetTotal() {
+    void testGetTotalFromZeroOrderItem() {
+        assertEquals(0, order.getTotal());
+    }
+
+    @Test
+    void testGetTotalFromOneOrderItem() {
         Product product = new Product(1, "Spoon", 50, 20);
         order.addItem(product, 10);
-        assertEquals(10 * 50, order.getTotal());
+        assertEquals(product.getPrice() * 10, order.getTotal());
+    }
+
+    @Test
+    void testGetTotalFromTwoOrderItem() {
+        Product product1 = new Product(1, "Spoon", 50, 20);
+        Product product2 = new Product(3, "Knife", 80, 20);
+        order.addItem(product1, 10);
+        order.addItem(product2, 5);
+        assertEquals((product1.getPrice() * 10) + (product2.getPrice() * 5), order.getTotal());
     }
 }
