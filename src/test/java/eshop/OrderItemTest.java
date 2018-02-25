@@ -7,18 +7,40 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OrderItemTest {
 
-    private double productPrice = 50;
-    private int orderItemQuantity = 10;
+    private double defaultProductPrice = 50;
+    private int defaultOrderItemQuantity = 10;
+    private Product product;
     private OrderItem orderItem;
 
     @BeforeEach
     void setup() {
-        Product product = new Product(1, "Spoon", productPrice, 20);
-        orderItem = new OrderItem(product, orderItemQuantity);
+        product = new Product(1, "Spoon", defaultProductPrice, 20);
+        orderItem = new OrderItem(product, defaultOrderItemQuantity);
+    }
+
+    @Test
+    void testCreateZeroQuantityOrderItem() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new OrderItem(product, 0));
+        assertEquals("Order item quantity must be greater than zero", exception.getMessage());
+    }
+
+    @Test
+    void testCreateNegativeQuantityOrderItem() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new OrderItem(product, -10));
+        assertEquals("Order item quantity must be greater than zero", exception.getMessage());
+    }
+
+    @Test
+    void testCreateSlightlyNegativeQuantityOrderItem() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new OrderItem(product, -1));
+        assertEquals("Order item quantity must be greater than zero", exception.getMessage());
     }
 
     @Test
     void testGetSubtotal() {
-        assertEquals(productPrice * orderItemQuantity, orderItem.getSubtotal());
+        assertEquals(defaultProductPrice * defaultOrderItemQuantity, orderItem.getSubtotal());
     }
 }
