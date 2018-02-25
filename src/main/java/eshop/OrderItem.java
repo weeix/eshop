@@ -5,6 +5,9 @@ public class OrderItem {
     private int quantity;
 
     OrderItem(Product product, int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Order item quantity must be greater than zero");
+        }
         this.product = product;
         this.quantity = quantity;
     }
