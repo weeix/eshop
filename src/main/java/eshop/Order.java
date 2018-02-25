@@ -10,9 +10,20 @@ public class Order {
     private List<OrderItem> orderItems;
 
     Order(int id, LocalDateTime date) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Order ID must not be negative value");
+        }
         this.id = id;
         this.date = date;
         orderItems = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public void addItem(Product product, int quantity) {
@@ -22,8 +33,8 @@ public class Order {
 
     public double getTotal() {
         double sum = 0;
-        for (int i = 0; i < orderItems.size(); i++) {
-            sum += orderItems.get(0).getSubtotal();
+        for (OrderItem orderItem : orderItems) {
+            sum += orderItem.getSubtotal();
         }
         return sum;
     }
