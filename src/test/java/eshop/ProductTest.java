@@ -15,47 +15,71 @@ class ProductTest {
     }
 
     @Test
-    void getId() {
-        assertEquals(1, something.getId());
+    void testCreateNegativeIdProduct() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new Product(-1, "Fork", 50, 20));
+        assertEquals("Product ID must not be negative value", exception.getMessage());
     }
 
     @Test
-    void setId() {
-        something.setId(2);
-        assertEquals(2, something.getId());
+    void testCreateSpaceOnlyNameProduct() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new Product(2, "   ", 50, 20));
+        assertEquals("Product name must not be empty", exception.getMessage());
     }
 
     @Test
-    void getName() {
-        assertEquals("Spoon", something.getName());
+    void testCreateEmptyNameProduct() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new Product(2, "", 50, 20));
+        assertEquals("Product name must not be empty", exception.getMessage());
     }
 
     @Test
-    void setName() {
-        something.setName("Fork");
-        assertEquals("Fork", something.getName());
+    void testCreateNegativePriceProduct() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new Product(2, "Fork", -50, 20));
+        assertEquals("Product price must not be negative value", exception.getMessage());
     }
 
     @Test
-    void getPrice() {
-        assertEquals(50, something.getPrice());
+    void testCreateNegativeQuantityProduct() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new Product(2, "Fork", 50, -20));
+        assertEquals("Product quantity must not be negative value", exception.getMessage());
     }
 
     @Test
-    void setPrice() {
-        something.setPrice(60);
-        assertEquals(60, something.getPrice());
+    void testAddQuantityNegative() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> something.addQuantity(-10));
+        assertEquals("Quantity must be greater than zero", exception.getMessage());
     }
 
     @Test
-    void getQuantity() {
-        assertEquals(20, something.getQuantity());
+    void testAddQuantitySlightlyNegative() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> something.addQuantity(-1));
+        assertEquals("Quantity must be greater than zero", exception.getMessage());
     }
 
     @Test
-    void setQuantity() {
-        something.setQuantity(19);
-        assertEquals(19, something.getQuantity());
+    void testAddQuantityZero() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> something.addQuantity(0));
+        assertEquals("Quantity must be greater than zero", exception.getMessage());
+    }
+
+    @Test
+    void testAddQuantityPositive() {
+        something.addQuantity(10);
+        assertEquals(30, something.getQuantity());
+    }
+
+    @Test
+    void testAddQuantitySlightlyPositive() {
+        something.addQuantity(1);
+        assertEquals(21, something.getQuantity());
     }
 
 }
